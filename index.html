@@ -1,0 +1,237 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Birthday Letter</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Pacifico&family=Dancing+Script&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #ff9a9e, #fecfef, #ffd1ff);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .envelope {
+            position: relative;
+            width: 320px;
+            height: 220px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: 0.5s;
+            overflow: hidden;
+        }
+
+        @media (max-width: 480px) {
+            .envelope {
+                width: 260px;
+                height: 180px;
+            }
+        }
+
+        .flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #ff6b81;
+            clip-path: polygon(0 0, 100% 0, 50% 55%);
+            transform-origin: top;
+            transition: transform 0.6s ease;
+        }
+
+        .flap.open {
+            transform: rotateX(-160deg);
+        }
+
+        .flap.pop {
+            transform: rotateX(-180deg);
+        }
+
+        .letter {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) translateY(-20px);
+            width: 75%;
+            max-width: 320px;
+            padding: 25px;
+            background: linear-gradient(145deg, #fff0f5, #ffe4e1);
+            border-radius: 20px;
+            opacity: 0;
+            transition: all 1s ease;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+            font-family: 'Dancing Script', cursive;
+            color: #d6336c;
+            text-align: center;
+            border: 2px solid #ff4f7c;
+            z-index: 10;
+            overflow: visible; /* prevent scrollbar */
+        }
+
+        .letter .img {
+            width: 100%;
+            height: auto;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+
+        img{
+            width: 70%;
+        }
+
+        .letter h2 {
+            font-family: 'Pacifico', cursive;
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #ff3d6a;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+        }
+
+        .letter p {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #b8004c;
+            word-wrap: break-word;
+        }
+
+        .show-letter {
+            opacity: 1;
+            transform: translate(-50%, -50%) translateY(-20px);
+        }
+
+        .note {
+            position: fixed;
+            bottom: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 10px 20px;
+            background: rgba(0,0,0,0.5);
+            color: white;
+            border-radius: 10px;
+            font-size: 14px;
+            opacity: 0;
+            z-index: 9999;
+            transition: all 0.8s ease;
+        }
+
+        .note.show {
+            opacity: 1;
+            bottom: 80px;
+            animation: bounce 0.8s;
+        }
+
+        @keyframes bounce {
+            0% { transform: translateX(-50%) translateY(50px); }
+            50% { transform: translateX(-50%) translateY(-10px); }
+            70% { transform: translateX(-50%) translateY(5px); }
+            100% { transform: translateX(-50%) translateY(0); }
+        }
+
+    </style>
+</head>
+<body>
+
+    <audio id="bgMusic" src="https://files.catbox.moe/8renpv.mp3" loop></audio>
+
+    <div class="envelope" id="envelope">
+        <div class="flap" id="flap"></div>
+    </div>
+
+    <div class="letter" id="letter">
+        <div class="img"><img src="https://i.postimg.cc/SQn5SKvk/IMG_20251007_WA0030.jpg" alt="Photo" /></div>
+        <h2>💗 كل سنة و انتي طيبة 💗</h2>
+        <p id="typeText"></p>
+    </div>
+
+    <div class="note" id="note">دوس يا ريوق في اي حتة</div>
+
+    <script>
+        let clickCount = 0;
+        const envelope = document.getElementById('envelope');
+        const flap = document.getElementById('flap');
+        const letter = document.getElementById('letter');
+        const typeText = document.getElementById('typeText');
+        const note = document.getElementById('note');
+        const bgMusic = document.getElementById('bgMusic');
+
+        const message = `كل سنة وانتي طيبة يروحي وقلبي و حياتي والعمر كله ليكي يا سكرتي و تحققي كل ال نفسك فيه ونفضل دايما سوا طول العمر 
+         💗💗💗 كل سنه وانتي اجمل و احلي واحدة 
+         💗💗💗💗بحبك اوي اوي اوي 
+         بحبك more than you think ❤️`;
+
+        function typeWriter(i = 0) {
+            if (i < message.length) {
+                typeText.innerHTML += message.charAt(i);
+                setTimeout(() => typeWriter(i + 1), 160);
+            }
+        }
+
+        function launchConfetti() {
+            const colors = ['#ff4f7c','#ff6b81','#ff85a1','#ff99b6','#ffb3cc'];
+            for (let i = 0; i < 70; i++) {
+                const conf = document.createElement("div");
+                conf.style.position = "fixed";
+                conf.style.width = "8px";
+                conf.style.height = "8px";
+                conf.style.background = colors[Math.floor(Math.random()*colors.length)];
+                conf.style.top = "-10px";
+                conf.style.left = Math.random()*100 + "%";
+                conf.style.opacity = 0.9;
+                conf.style.borderRadius = "3px";
+                conf.style.transform = `rotate(${Math.random()*360}deg)`;
+                conf.style.transition = "transform 1s ease, top 1s ease";
+                document.body.appendChild(conf);
+                setTimeout(() => {
+                    conf.style.top = "110%";
+                    conf.style.transform = "translateY(800px) rotate(720deg)";
+                }, 1);
+                setTimeout(() => conf.remove(), 10);
+            }
+        }
+
+        let musicStarted = false;
+
+        document.body.addEventListener('click', () => {
+            // Start music once
+            if (!musicStarted) {
+                bgMusic.play();
+                musicStarted = true;
+            }
+
+            clickCount++;
+
+            if (clickCount === 1) {
+                // flap pop animation
+                flap.classList.add('open');
+                setTimeout(() => {
+                    flap.classList.add('pop');
+                }, 60);
+
+                // After flap animation, show letter, confetti, and note
+                setTimeout(() => {
+                    envelope.style.display = 'none';
+                    launchConfetti();
+                    letter.classList.add('show-letter');
+                    note.classList.add('show');
+                }, 400);
+            } else if (clickCount === 2) {
+                typeWriter();
+                note.classList.remove('show');
+            }
+        });
+    </script>
+
+</body>
+</html>
+
