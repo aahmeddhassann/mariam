@@ -131,6 +131,15 @@
             animation: bounce 0.8s;
         }
 
+        video{
+            width: 100%;
+        }
+
+        .vid{
+            width: 70%;
+            background-color: #b8004c;
+        }
+
         @keyframes bounce {
             0% { transform: translateX(-50%) translateY(50px); }
             50% { transform: translateX(-50%) translateY(-10px); }
@@ -154,6 +163,7 @@
         <p id="typeText"></p>
     </div>
 
+    
     <div class="note" id="note">دوس يا ريوق في اي حتة</div>
 
     <script>
@@ -166,7 +176,12 @@
         const bgMusic = document.getElementById('bgMusic');
 
         const message = `كل سنة وانتي طيبة يروحي وقلبي و حياتي والعمر كله ليكي يا سكرتي و تحققي كل ال نفسك فيه ونفضل دايما سوا طول العمر 
-         💗💗💗 كل سنه وانتي اجمل و احلي واحدة 
+         عمري ما كنت متعلق بحاجه كدا بس انتي الحاجه الوحيده ال اخاف اخسرها 
+         عمري ما مليت وانا معاكي ولا عمري همل 
+         انتي الحاجات الحلوه ال ف حياتي 
+         شكرا انك ف حياتي 
+         و
+        💗💗💗 كل سنه وانتي اجمل و احلي واحدة 
          💗💗💗💗بحبك اوي اوي اوي 
          بحبك more than you think ❤️`;
 
@@ -203,7 +218,7 @@
         let musicStarted = false;
 
         document.body.addEventListener('click', () => {
-            // Start music once
+            
             if (!musicStarted) {
                 bgMusic.play();
                 musicStarted = true;
@@ -212,13 +227,11 @@
             clickCount++;
 
             if (clickCount === 1) {
-                // flap pop animation
                 flap.classList.add('open');
                 setTimeout(() => {
                     flap.classList.add('pop');
                 }, 60);
 
-                // After flap animation, show letter, confetti, and note
                 setTimeout(() => {
                     envelope.style.display = 'none';
                     launchConfetti();
